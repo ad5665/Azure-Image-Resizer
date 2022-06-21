@@ -20,7 +20,7 @@ module "storage_container" {
     source = "../../modules/storage/storage_container"
     name = "imageresizer${local.env}"
     storage_account_name = module.storage_account.name
-    container_access_type = "private"
+    container_access_type = "blob"
 }
 
 module "storage_container_tfstate" {
@@ -28,4 +28,15 @@ module "storage_container_tfstate" {
     name = "tfstate${local.env}"
     storage_account_name = module.storage_account.name
     container_access_type = "private"
+}
+
+module "sql_server" {
+    source = "../../modules/sql/sql_server"
+    name = "imageresizer${local.env}"
+    resource_group_name = local.resource_group_name
+    location = "eastus2" ## different due to msdn subscription 
+    //version = "12.0"
+    administrator_login = var.sql_login
+    administrator_login_password = var.sql_password
+    tags = local.tags
 }
